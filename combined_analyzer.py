@@ -28,16 +28,24 @@ def analyze_project_latex(project_root: str, entry_file: str = None, project_nam
     phase1_costs = calculate_phase1_costs(chunk_analysis)
     phase2_costs = calculate_phase2_costs(avg_chunk_tokens=avg_chunk_tokens)
 
-    # Baseline strategy: input tokens = avg_chunk_tokens * 3
-    baseline_input_tokens = int(avg_chunk_tokens * 3)
-    baseline_output_tokens = int(avg_chunk_tokens)
-    baseline_input_cost = calculate_cost(baseline_input_tokens, CLAUDE_INPUT_COST_PER_KTOK)
-    baseline_output_cost = calculate_cost(baseline_output_tokens, CLAUDE_OUTPUT_COST_PER_KTOK)
-    baseline_total = baseline_input_cost + baseline_output_cost
+    # Baseline strategy: use same calculation as Strategy 3 in markdown section
+    # Strategy 3: Input = avg file tokens + 2x avg chunk tokens, Output = 1x avg chunk tokens
+    strategy3_input_tokens = round(avg_tokens_per_file + 2 * avg_chunk_tokens)
+    strategy3_output_tokens = round(avg_chunk_tokens)
+    strategy3_input_cost = calculate_cost(strategy3_input_tokens, CLAUDE_INPUT_COST_PER_KTOK)
+    strategy3_output_cost = calculate_cost(strategy3_output_tokens, CLAUDE_OUTPUT_COST_PER_KTOK)
+    strategy3_total = strategy3_input_cost + strategy3_output_cost
+
+    # Use the exact same values for baseline as for strategy 3
+    baseline_input_tokens = strategy3_input_tokens
+    baseline_output_tokens = strategy3_output_tokens
+    baseline_input_cost = strategy3_input_cost
+    baseline_output_cost = strategy3_output_cost
+    baseline_total = strategy3_total
 
     # Chunk-based retrieval (our approach)
-    chunk_input_tokens = int(phase2_costs['input_tokens_used'])
-    chunk_output_tokens = int(phase2_costs['output_tokens_used'])
+    chunk_input_tokens = round(phase2_costs['input_tokens_used'])
+    chunk_output_tokens = round(phase2_costs['output_tokens_used'])
     chunk_total = phase2_costs['total_per_prompt']
 
     # One-time costs
@@ -206,7 +214,7 @@ def analyze_project(project_root: str, entry_file: str = None, format_type: str 
 
 
 def main():
-    project_root = "tensorflow/tensorflow"
+    project_root = "core/homeassistant"  # Default project root
     entry_file = os.path.join(project_root, "__init__.py")
     if not os.path.exists(project_root):
         print(f"Project root '{project_root}' not found. Using current directory.")
