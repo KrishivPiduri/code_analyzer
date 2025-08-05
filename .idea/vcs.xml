@@ -2,12 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/core" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/django" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/fastapi" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/json2csv" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/pandas" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/symptoid" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/tensorflow" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/url-shortener" vcs="Git" />
   </component>
 </project>
